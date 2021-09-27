@@ -2,10 +2,11 @@ import Config
 
 # Configure your database
 config :local_hex, LocalHex.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "local_hex_dev",
-  hostname: "localhost",
+  username: System.get_env("DB_USER", "postgres"),
+  password: System.get_env("DB_PASSWORD", "postgres"),
+  database: System.get_env("DB_NAME", "local_hex_dev"),
+  hostname: System.get_env("DB_HOST", "localhost"),
+  port: System.get_env("DB_PORT", "5432") |> String.to_integer(),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -18,7 +19,7 @@ config :local_hex, LocalHex.Repo,
 config :local_hex_web, LocalHexWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,

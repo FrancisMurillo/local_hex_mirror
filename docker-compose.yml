@@ -1,0 +1,48 @@
+version: '3.1'
+services:
+  db:
+    image: postgres:9.5.17-alpine
+    logging:
+      driver: none
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "local_hex_dev"
+  app_deps:
+    image: nginx:1.21.3-alpine
+    logging:
+      driver: none
+    volumes:
+      - ./.hex_repo:/usr/share/nginx/html
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "mix phx.server"
+    entrypoint: /opt/app/local_hex_mirror/docker-entrypoint.sh
+    restart: always
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/opt/app/local_hex_mirror
+      - mix_build:/opt/app/_build
+      - rebar_cache:/opt/app/.cache
+      - mix_deps:/opt/app/local_hex_mirror/deps
+    depends_on:
+      - app_deps
+      - db
+    links:
+      - app_deps:app_deps
+      - db:db
+    environment:
+      HEX_REGISTRY: "http://app_deps:80"
+      DB_HOST: "db"
+
+volumes:
+  db:
+  mix_deps:
+  mix_build:
+  rebar_cache:
