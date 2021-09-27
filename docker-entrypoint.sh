@@ -6,6 +6,7 @@ if [[ -z "${HEX_REGISTRY}" ]]; then
   echo "Using online hexpm mirror"
   export HEX_HTTP_CONCURRENCY=1
   export HEX_HTTP_TIMEOUT=1200
+  mix hex.repo add hexpm "https://repo.hex.pm" --public-key="hex_public_key"
 else
   echo "Using local hexpm mirror: $HEX_REGISTRY"
   export HEX_NO_VERIFY_REPO_ORIGIN=1
