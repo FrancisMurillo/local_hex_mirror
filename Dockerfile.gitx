@@ -1,0 +1,7 @@
+FROM nginx:1.21.3-alpine
+
+# Make sure git-http-backend and fcgiwrap is installed
+RUN apk add --update git git-daemon apache2-utils fcgiwrap
+
+# Make sure the git repo root is accessible to nginx
+RUN mkdir -p /srv/git && chown -R nginx:nginx /srv/git && chmod -R 755 /srv/git

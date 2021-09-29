@@ -1,0 +1,6 @@
+# pack-refs with: peeled fully-peeled sorted 
+fae532b46ff9e12cabc9525371fc674599cd2e16 refs/heads/deflate-support
+abbb2c37428b7bfe644ee17d332455a866eeceeb refs/heads/ibrowse-4.4
+b43616a08459451cc5afdcd9839b732cbc1dedfa refs/heads/master
+b14b40ccba186b65d46edad7ab70415364b17514 refs/heads/reorganize-jan2016
+24aa127c454ddb17a88b98ec4579abd2d8e4fbc5 refs/heads/tls-support

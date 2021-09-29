@@ -11,6 +11,19 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "local_hex_dev"
+  git_deps:
+    build:
+      context: ./.git_repo
+      dockerfile: ../Dockerfile.gitx
+    logging:
+      driver: none
+    entrypoint: "sh /srv/git-entry.sh"
+    volumes:
+      - ./.git_repo:/srv/git
+      - ./git-nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./git-entrypoint.sh:/srv/git-entry.sh
+      - ./git-selfsigned.crt:/srv/git-selfsigned.crt
+      - ./git-selfsigned.key:/srv/git-selfsigned.key
   app_deps:
     image: nginx:1.21.3-alpine
     logging:
@@ -33,11 +46,14 @@ services:
       - mix_deps:/opt/app/local_hex_mirror/deps
     depends_on:
       - app_deps
+      - git_deps
       - db
     links:
       - app_deps:app_deps
+      - git_deps:github.com
       - db:db
     environment:
+      GIT_SSL_NO_VERIFY: "true"
       HEX_REGISTRY: "http://app_deps:80"
       DB_HOST: "db"
 

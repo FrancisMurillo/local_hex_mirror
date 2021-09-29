@@ -45,7 +45,13 @@ defmodule LocalHexWeb.MixProject do
       {:gettext, "~> 0.18"},
       {:local_hex, in_umbrella: true},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      # Git dependencies
+      {:elixir_nsq,
+         git: "https://github.com/wistia/elixir_nsq",
+         ref: "b43616a08459451cc5afdcd9839b732cbc1dedfa",
+         override: true},
+      {:rummage_ecto, git: "https://github.com/annkissam/rummage_ecto.git", branch: "v2.0"}
     ]
   end
 
